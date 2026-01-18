@@ -1,6 +1,7 @@
 package com.example.BE_E_commerce.dto.request;
 
 
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
@@ -13,4 +14,11 @@ public class UpdateProfileRequest {
 
     @Pattern(regexp = "^(\\+84|0)[0-9]{9}$", message = "Invalid Vietnamese phone number")
     private String phone;
+
+    @Email
+    private String email;
+
+    private String avatarUrl;
+
+
 }

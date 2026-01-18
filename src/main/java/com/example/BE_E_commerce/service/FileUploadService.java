@@ -48,15 +48,7 @@ public class FileUploadService {
                     ObjectUtils.asMap(
                             "public_id", publicId,
                             "folder", folder,
-                            "resource_type", "image",
-                            "transformation", Arrays.asList(
-                                    ObjectUtils.asMap(
-                                            "width", 400,
-                                            "height", 400,
-                                            "crop", "fill",
-                                            "gravity", "face"
-                                    )
-                            )
+                            "resource_type", "image"
                     )
             );
 

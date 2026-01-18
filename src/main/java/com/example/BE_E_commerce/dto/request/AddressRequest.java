@@ -31,4 +31,6 @@ public class AddressRequest {
     @NotBlank(message = "City is required")
     @Size(max = 100)
     private String city;
+
+    private Boolean isDefault;
 }
