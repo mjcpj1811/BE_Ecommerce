@@ -1,9 +1,13 @@
 package com.example.BE_E_commerce.config;
 
 
-import com.example.BE_E_commerce.security.JwtAuthenticationEntryPoint;
-import com.example.BE_E_commerce.security.JwtAuthenticationFilter;
-import com.example.BE_E_commerce.security.UserDetailsServiceImpl;
+import com.example.BE_E_commerce.security.jwt.JwtAuthenticationEntryPoint;
+import com.example.BE_E_commerce.security.jwt.JwtAuthenticationFilter;
+import com.example.BE_E_commerce.security.jwt.UserDetailsServiceImpl;
+import com.example.BE_E_commerce.security.oauth2.HttpCookieOAuth2AuthorizationRequestRepository;
+import com.example.BE_E_commerce.security.oauth2.OAuth2AuthenticationFailureHandler;
+import com.example.BE_E_commerce.security.oauth2.OAuth2AuthenticationSuccessHandler;
+import com.example.BE_E_commerce.service.CustomOAuth2UserService;
 import lombok. RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -36,6 +40,11 @@ public class SecurityConfig {
     private final UserDetailsServiceImpl userDetailsService;
     private final JwtAuthenticationEntryPoint authenticationEntryPoint;
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
+
+    private final CustomOAuth2UserService customOAuth2UserService;
+    private final OAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler;
+    private final OAuth2AuthenticationFailureHandler oAuth2AuthenticationFailureHandler;
+    private final HttpCookieOAuth2AuthorizationRequestRepository httpCookieOAuth2AuthorizationRequestRepository;
 
     /**
      * Password Encoder Bean
@@ -136,12 +145,31 @@ public class SecurityConfig {
                         exception.authenticationEntryPoint(authenticationEntryPoint)
                 )
 
+                // OAuth2 Login
+                .oauth2Login(oauth2 -> oauth2
+                        .authorizationEndpoint(authorization -> authorization
+                                .baseUri("/oauth2/authorize")
+                                .authorizationRequestRepository(httpCookieOAuth2AuthorizationRequestRepository)
+                        )
+                        .redirectionEndpoint(redirection -> redirection
+                                .baseUri("/oauth2/callback/*")
+                        )
+                        .userInfoEndpoint(userInfo -> userInfo
+                                .userService(customOAuth2UserService)
+                        )
+                        .successHandler(oAuth2AuthenticationSuccessHandler)
+                        .failureHandler(oAuth2AuthenticationFailureHandler)
+                )
+
                 // Authorization rules
                 .authorizeHttpRequests(auth -> auth
                         // ========== PUBLIC ENDPOINTS ==========
 
                         // Auth endpoints
                         .requestMatchers("/api/auth/**").permitAll()
+                        
+                        // OAuth2 endpoints
+                        .requestMatchers("/oauth2/**").permitAll()
 
                         // Test endpoints
                         .requestMatchers("/api/test/**").permitAll()

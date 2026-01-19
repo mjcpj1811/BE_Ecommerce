@@ -1,5 +1,6 @@
 package com.example.BE_E_commerce.entity;
 
+import com.example.BE_E_commerce.enums.AuthProvider;
 import com.example.BE_E_commerce.enums.UserRole;
 import com.example.BE_E_commerce.enums.UserStatus;
 import jakarta.persistence.*;
@@ -14,6 +15,7 @@ import java.util.List;
 @Entity
 @Table(name = "users", indexes = {
         @Index(name = "idx_email", columnList = "email"),
+        @Index(name = "idx_username", columnList = "username"),
         @Index(name = "idx_role", columnList = "role")
 })
 @Getter
@@ -27,13 +29,13 @@ public class User {
     @GeneratedValue(strategy = GenerationType. IDENTITY)
     private Long id;
 
-    @Column(nullable = false, length = 255)
+    @Column(unique = true, nullable = false, length = 50)
     private String username;
 
     @Column(unique = true, nullable = false, length = 255)
     private String email;
 
-    @Column(nullable = false, length = 255)
+    @Column(length = 255)
     private String passwordHash;
 
     @Column(length = 255)
@@ -59,6 +61,18 @@ public class User {
     @Builder.Default
     private Boolean emailVerified = false;
 
+    // ========== OAUTH2 FIELDS ==========
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    @Builder.Default
+    private AuthProvider provider = AuthProvider.LOCAL;
+
+    @Column(length = 255)
+    private String providerId; // Google ID or Facebook ID
+
+    // ========================================
+
     @CreationTimestamp
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;
@@ -79,16 +93,4 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     @Builder.Default
     private List<Order> orders = new ArrayList<>();
-
-    // ========== HELPER METHODS ==========
-
-    public void addAddress(UserAddress address) {
-        addresses.add(address);
-        address.setUser(this);
-    }
-
-    public void removeAddress(UserAddress address) {
-        addresses.remove(address);
-        address.setUser(null);
-    }
 }

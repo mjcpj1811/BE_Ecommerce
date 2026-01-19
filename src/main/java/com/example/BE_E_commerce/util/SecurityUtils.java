@@ -1,9 +1,8 @@
 package com.example.BE_E_commerce.util;
 
-import com.example.BE_E_commerce.security.UserDetailsImpl;
+import com.example.BE_E_commerce.security.jwt.UserDetailsImpl;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Optional;
 

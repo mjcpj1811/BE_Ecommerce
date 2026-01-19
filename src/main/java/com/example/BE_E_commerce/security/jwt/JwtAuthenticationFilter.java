@@ -1,4 +1,4 @@
-package com.example.BE_E_commerce.security;
+package com.example.BE_E_commerce.security.jwt;
 
 import com.example.BE_E_commerce.service.RedisService;
 import jakarta.servlet.FilterChain;

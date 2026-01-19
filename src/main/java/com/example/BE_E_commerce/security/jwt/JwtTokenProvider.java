@@ -1,4 +1,4 @@
-package com.example.BE_E_commerce.security;
+package com.example.BE_E_commerce.security.jwt;
 
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
