@@ -128,7 +128,7 @@ public class SecurityConfig {
                 // Enable CORS
                 .cors(cors -> cors.configurationSource(request -> {
                     CorsConfiguration config = new CorsConfiguration();
-                    config.setAllowedOrigins(List.of("http://localhost:5173"));
+                    config.setAllowedOrigins(List.of("http://localhost:5173","http://localhost:5174"));
                     config.setAllowedMethods(List.of("GET","POST","PUT","DELETE","OPTIONS"));
                     config.setAllowedHeaders(List.of("*"));
                     config.setAllowCredentials(true);
@@ -151,9 +151,8 @@ public class SecurityConfig {
                                 .baseUri("/oauth2/authorize")
                                 .authorizationRequestRepository(httpCookieOAuth2AuthorizationRequestRepository)
                         )
-                        .redirectionEndpoint(redirection -> redirection
-                                .baseUri("/oauth2/callback/*")
-                        )
+                        // Sử dụng default Spring redirect endpoint: /login/oauth2/code/{provider}
+                        // .redirectionEndpoint() - comment out để dùng default
                         .userInfoEndpoint(userInfo -> userInfo
                                 .userService(customOAuth2UserService)
                         )
@@ -168,8 +167,9 @@ public class SecurityConfig {
                         // Auth endpoints
                         .requestMatchers("/api/auth/**").permitAll()
                         
-                        // OAuth2 endpoints
+                        // OAuth2 endpoints - both custom and default Spring paths
                         .requestMatchers("/oauth2/**").permitAll()
+                        .requestMatchers("/login/oauth2/**").permitAll()
 
                         // Test endpoints
                         .requestMatchers("/api/test/**").permitAll()
