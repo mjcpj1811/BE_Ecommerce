@@ -96,10 +96,6 @@ public class Shop {
     @OneToOne(mappedBy = "shop", cascade = CascadeType.ALL, orphanRemoval = true)
     private ShopBalance balance;
 
-    @OneToMany(mappedBy = "shop", cascade = CascadeType.ALL, orphanRemoval = true)
-    @Builder.Default
-    private List<Review> reviews = new ArrayList<>();
-
     // ========== HELPER METHODS ==========
 
     public void addProduct(Product product) {

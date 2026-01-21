@@ -1,19 +1,14 @@
 package com.example.BE_E_commerce.entity;
 
-
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
 
-import java.math. BigDecimal;
-import java. time.LocalDateTime;
+import java.math.BigDecimal;
 
 @Entity
 @Table(name = "product_variants", indexes = {
         @Index(name = "idx_product_id", columnList = "product_id"),
-        @Index(name = "idx_sku", columnList = "sku"),
-        @Index(name = "idx_stock", columnList = "stock")
+        @Index(name = "idx_sku", columnList = "sku")
 })
 @Getter
 @Setter
@@ -39,55 +34,46 @@ public class ProductVariant {
     @Column(length = 50)
     private String color;
 
-    @Column(precision = 15, scale = 2, nullable = false)
+    @Column(nullable = false, precision = 15, scale = 2)
     private BigDecimal price;
 
-    @Column(nullable = false)
+    @Column(precision = 15, scale = 2)
+    private BigDecimal originalPrice; // Giá gốc (trước khi giảm)
+
+    @Column(name = "discount_percent")
+    private Integer discountPercent;
+
+    @Column(name = "stock_quantity", nullable = false)
     @Builder.Default
-    private Integer stock = 0;
+    private Integer stockQuantity = 0;
 
-    @Column(length = 500)
-    private String imageUrl;
-
-    @Column(nullable = false)
+    @Column(name = "is_active", nullable = false)
     @Builder.Default
     private Boolean isActive = true;
 
-    @CreationTimestamp
-    @Column(nullable = false, updatable = false)
-    private LocalDateTime createdAt;
-
-    @UpdateTimestamp
-    @Column(nullable = false)
-    private LocalDateTime updatedAt;
-
-    @Version
-    private Long version; // Optimistic locking for stock
-
     // ========== HELPER METHODS ==========
 
-    public boolean hasStock(int quantity) {
-        return this.stock >= quantity;
-    }
-
-    public void decreaseStock(int quantity) {
-        if (! hasStock(quantity)) {
-            throw new IllegalStateException("Insufficient stock");
+    /**
+     * Decrease stock
+     */
+    public void decreaseStock(Integer quantity) {
+        if (this.stockQuantity < quantity) {
+            throw new IllegalStateException("Not enough stock");
         }
-        this.stock -= quantity;
+        this.stockQuantity -= quantity;
     }
 
-    public void increaseStock(int quantity) {
-        this.stock += quantity;
+    /**
+     * Increase stock
+     */
+    public void increaseStock(Integer quantity) {
+        this.stockQuantity += quantity;
     }
 
-    public String getVariantName() {
-        StringBuilder name = new StringBuilder();
-        if (size != null) name.append(size);
-        if (color != null) {
-            if (name.length() > 0) name.append(" - ");
-            name.append(color);
-        }
-        return name.toString();
+    /**
+     * Check if in stock
+     */
+    public boolean isInStock() {
+        return this.stockQuantity > 0 && this.isActive;
     }
 }
