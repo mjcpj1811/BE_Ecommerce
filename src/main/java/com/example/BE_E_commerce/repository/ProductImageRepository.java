@@ -18,6 +18,5 @@ public interface ProductImageRepository extends JpaRepository<ProductImage,Long>
     Optional<ProductImage> findByProductIdAndIsPrimaryTrue(Long productId);
 
     // Get first image (thumbnail)
-    @Query("SELECT pi FROM ProductImage pi WHERE pi.product.id = :productId ORDER BY pi.isPrimary DESC, pi.displayOrder ASC")
     Optional<ProductImage> findFirstByProductId(@Param("productId") Long productId);
 }

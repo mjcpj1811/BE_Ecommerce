@@ -273,11 +273,27 @@ public class CategoryService {
     private CategoryResponse toCategoryResponse(Category category) {
         CategoryResponse response = categoryMapper.toResponse(category);
 
-        // Get product count
-        Long productCount = categoryRepository.countProductsByCategoryId(category.getId());
+        // Get product count (including all subcategories)
+        Long productCount = countProductsInCategoryTree(category.getId());
         response.setProductCount(productCount);
 
         return response;
+    }
+
+    /**
+     * Count products in category and all its subcategories
+     */
+    private Long countProductsInCategoryTree(Long categoryId) {
+        // Get all descendant category IDs
+        List<Long> categoryIds = getAllDescendantIds(categoryId);
+        
+        // Count products in all these categories
+        long totalCount = 0;
+        for (Long id : categoryIds) {
+            totalCount += categoryRepository.countProductsByCategoryId(id);
+        }
+        
+        return totalCount;
     }
 
     /**
@@ -331,5 +347,33 @@ public class CategoryService {
             current = current.getParent();
         }
         return false;
+    }
+
+    /**
+     * Get all descendant IDs of a category (including the category itself)
+     * For filtering products: parent category should show products from all subcategories
+     */
+    @Transactional(readOnly = true)
+    public List<Long> getAllDescendantIds(Long categoryId) {
+        List<Long> ids = new ArrayList<>();
+        ids.add(categoryId); // Include the parent category itself
+        
+        Category category = categoryRepository.findById(categoryId).orElse(null);
+        if (category != null) {
+            collectDescendantIds(category, ids);
+        }
+        
+        return ids;
+    }
+
+    /**
+     * Recursively collect all descendant IDs
+     */
+    private void collectDescendantIds(Category category, List<Long> ids) {
+        List<Category> children = categoryRepository.findByParentIdOrderByDisplayOrderAsc(category.getId());
+        for (Category child : children) {
+            ids.add(child.getId());
+            collectDescendantIds(child, ids); // Recursive call for nested subcategories
+        }
     }
 }

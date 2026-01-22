@@ -35,6 +35,9 @@ public interface ProductRepository  extends JpaRepository<Product,Long> {
     // Find active products by category
     Page<Product> findByCategoryIdAndStatus(Long categoryId, ProductStatus status, Pageable pageable);
 
+    // Find active products by multiple categories (parent + subcategories)
+    Page<Product> findByCategoryIdInAndStatus(List<Long> categoryIds, ProductStatus status, Pageable pageable);
+
     // Search by name (simple)
     @Query("SELECT p FROM Product p WHERE LOWER(p.name) LIKE LOWER(CONCAT('%', :keyword, '%')) AND p.status = :status")
     Page<Product> searchByName(@Param("keyword") String keyword,
@@ -45,13 +48,13 @@ public interface ProductRepository  extends JpaRepository<Product,Long> {
     @Query("SELECT DISTINCT p FROM Product p " +
             "LEFT JOIN p.variants v " +
             "WHERE (:keyword IS NULL OR LOWER(p.name) LIKE LOWER(CONCAT('%', :keyword, '%'))) " +
-            "AND (:categoryId IS NULL OR p.category.id = :categoryId) " +
+            "AND (:categoryIds IS NULL OR p.category.id IN :categoryIds) " +
             "AND (:shopId IS NULL OR p.shop.id = :shopId) " +
             "AND (:minPrice IS NULL OR v.price >= :minPrice) " +
             "AND (:maxPrice IS NULL OR v.price <= :maxPrice) " +
             "AND p.status = :status")
     Page<Product> searchWithFilters(@Param("keyword") String keyword,
-                                    @Param("categoryId") Long categoryId,
+                                    @Param("categoryIds") List<Long> categoryIds,
                                     @Param("shopId") Long shopId,
                                     @Param("minPrice") BigDecimal minPrice,
                                     @Param("maxPrice") BigDecimal maxPrice,
@@ -62,14 +65,14 @@ public interface ProductRepository  extends JpaRepository<Product,Long> {
     @Query("SELECT DISTINCT p FROM Product p " +
             "LEFT JOIN p.variants v " +
             "WHERE (:keyword IS NULL OR LOWER(p.name) LIKE LOWER(CONCAT('%', :keyword, '%'))) " +
-            "AND (:categoryId IS NULL OR p.category.id = :categoryId) " +
+            "AND (:categoryIds IS NULL OR p.category.id IN :categoryIds) " +
             "AND (:shopId IS NULL OR p.shop.id = :shopId) " +
             "AND (:minPrice IS NULL OR v.price >= :minPrice) " +
             "AND (:maxPrice IS NULL OR v.price <= :maxPrice) " +
             "AND p.status = :status " +
             "ORDER BY (SELECT MIN(v2.price) FROM ProductVariant v2 WHERE v2.product = p) ASC")
     Page<Product> searchWithFiltersOrderByPriceAsc(@Param("keyword") String keyword,
-                                                     @Param("categoryId") Long categoryId,
+                                                     @Param("categoryIds") List<Long> categoryIds,
                                                      @Param("shopId") Long shopId,
                                                      @Param("minPrice") BigDecimal minPrice,
                                                      @Param("maxPrice") BigDecimal maxPrice,
@@ -80,14 +83,14 @@ public interface ProductRepository  extends JpaRepository<Product,Long> {
     @Query("SELECT DISTINCT p FROM Product p " +
             "LEFT JOIN p.variants v " +
             "WHERE (:keyword IS NULL OR LOWER(p.name) LIKE LOWER(CONCAT('%', :keyword, '%'))) " +
-            "AND (:categoryId IS NULL OR p.category.id = :categoryId) " +
+            "AND (:categoryIds IS NULL OR p.category.id IN :categoryIds) " +
             "AND (:shopId IS NULL OR p.shop.id = :shopId) " +
             "AND (:minPrice IS NULL OR v.price >= :minPrice) " +
             "AND (:maxPrice IS NULL OR v.price <= :maxPrice) " +
             "AND p.status = :status " +
             "ORDER BY (SELECT MIN(v2.price) FROM ProductVariant v2 WHERE v2.product = p) DESC")
     Page<Product> searchWithFiltersOrderByPriceDesc(@Param("keyword") String keyword,
-                                                      @Param("categoryId") Long categoryId,
+                                                      @Param("categoryIds") List<Long> categoryIds,
                                                       @Param("shopId") Long shopId,
                                                       @Param("minPrice") BigDecimal minPrice,
                                                       @Param("maxPrice") BigDecimal maxPrice,

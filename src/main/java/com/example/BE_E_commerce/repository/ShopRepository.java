@@ -4,5 +4,6 @@ import org.hibernate.type.descriptor.converter.spi.JpaAttributeConverter;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface Shop extends JpaAttributeConverter<Shop,Long> {
+public interface ShopRepository extends JpaAttributeConverter<ShopRepository,Long> {
+
 }

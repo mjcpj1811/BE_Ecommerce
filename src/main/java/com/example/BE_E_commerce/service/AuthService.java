@@ -110,7 +110,7 @@ public class AuthService {
                 )
         );
 
-        SecurityContextHolder. getContext().setAuthentication(authentication);
+        SecurityContextHolder.getContext().setAuthentication(authentication);
 
         // Generate JWT token
         String jwt = jwtTokenProvider.generateToken(authentication);

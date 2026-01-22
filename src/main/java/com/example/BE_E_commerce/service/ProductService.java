@@ -37,6 +37,7 @@ public class ProductService {
     private final ProductMapper productMapper;
     private final ProductVariantMapper variantMapper;
     private final ProductImageMapper imageMapper;
+    private final CategoryService categoryService;
 
     // ========== PUBLIC ENDPOINTS ==========
 
@@ -47,6 +48,12 @@ public class ProductService {
     public PageResponse<ProductResponse> getAllProducts(ProductFilterRequest filter) {
         Page<Product> productPage;
 
+        // Get all category IDs if categoryId filter is provided (parent + subcategories)
+        List<Long> categoryIds = null;
+        if (filter.getCategoryId() != null) {
+            categoryIds = categoryService.getAllDescendantIds(filter.getCategoryId());
+        }
+
         if (hasFilters(filter)) {
             // Search with filters
             if ("price".equalsIgnoreCase(filter.getSortBy())) {
@@ -55,7 +62,7 @@ public class ProductService {
                 if ("ASC".equalsIgnoreCase(filter.getSortDirection())) {
                     productPage = productRepository.searchWithFiltersOrderByPriceAsc(
                             filter.getKeyword(),
-                            filter.getCategoryId(),
+                            categoryIds,
                             filter.getShopId(),
                             filter.getMinPrice(),
                             filter.getMaxPrice(),
@@ -65,7 +72,7 @@ public class ProductService {
                 } else {
                     productPage = productRepository.searchWithFiltersOrderByPriceDesc(
                             filter.getKeyword(),
-                            filter.getCategoryId(),
+                            categoryIds,
                             filter.getShopId(),
                             filter.getMinPrice(),
                             filter.getMaxPrice(),
@@ -78,7 +85,7 @@ public class ProductService {
                 Pageable pageable = createPageable(filter);
                 productPage = productRepository.searchWithFilters(
                         filter.getKeyword(),
-                        filter.getCategoryId(),
+                        categoryIds,
                         filter.getShopId(),
                         filter.getMinPrice(),
                         filter.getMaxPrice(),
@@ -151,12 +158,15 @@ public class ProductService {
     }
 
     /**
-     * Get products by category
+     * Get products by category (includes subcategories)
      */
     @Transactional(readOnly = true)
     public PageResponse<ProductResponse> getProductsByCategory(Long categoryId, Pageable pageable) {
-        Page<Product> productPage = productRepository.findByCategoryIdAndStatus(
-                categoryId,
+        // Get all category IDs (parent + all descendants)
+        List<Long> categoryIds = categoryService.getAllDescendantIds(categoryId);
+        
+        Page<Product> productPage = productRepository.findByCategoryIdInAndStatus(
+                categoryIds,
                 ProductStatus.ACTIVE,
                 pageable
         );
