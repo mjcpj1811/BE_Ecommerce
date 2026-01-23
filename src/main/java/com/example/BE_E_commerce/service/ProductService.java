@@ -93,6 +93,7 @@ public class ProductService {
                         pageable
                 );
             }
+
         } else {
             // Get all active products
             Pageable pageable = createPageable(filter);
