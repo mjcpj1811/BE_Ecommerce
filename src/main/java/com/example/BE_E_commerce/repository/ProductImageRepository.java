@@ -17,6 +17,7 @@ public interface ProductImageRepository extends JpaRepository<ProductImage,Long>
     // Find primary image
     Optional<ProductImage> findByProductIdAndIsPrimaryTrue(Long productId);
 
+
     // Get first image (thumbnail)
     Optional<ProductImage> findFirstByProductId(@Param("productId") Long productId);
 }
