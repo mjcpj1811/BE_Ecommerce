@@ -92,6 +92,7 @@ public class SecurityConfig {
                 "GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"
         ));
 
+
         // Allow headers
         configuration.setAllowedHeaders(Arrays.asList(
                 "Authorization",
