@@ -22,12 +22,24 @@ import java. time.Duration;
 @EnableCaching
 public class RedisConfig {
 
-    @Bean
-    public ObjectMapper redisObjectMapper() {
+    /**
+     * Create a separate ObjectMapper ONLY for Redis
+     * This will NOT affect the default HTTP message converter
+     */
+    private ObjectMapper createRedisObjectMapper() {
         ObjectMapper mapper = new ObjectMapper();
 
         // Register JavaTimeModule for LocalDateTime support
         mapper.registerModule(new JavaTimeModule());
+
+        // Enable default typing for polymorphic types (ONLY for Redis)
+        mapper.activateDefaultTyping(
+                BasicPolymorphicTypeValidator.builder()
+                        .allowIfSubType(Object.class)
+                        .build(),
+                ObjectMapper.DefaultTyping.NON_FINAL,
+                JsonTypeInfo.As.PROPERTY
+        );
 
         return mapper;
     }
@@ -41,9 +53,9 @@ public class RedisConfig {
         // String serializer cho key
         StringRedisSerializer stringSerializer = new StringRedisSerializer();
 
-        // JSON serializer cho value
+        // JSON serializer cho value (using Redis-specific ObjectMapper)
         GenericJackson2JsonRedisSerializer jsonSerializer =
-                new GenericJackson2JsonRedisSerializer(redisObjectMapper());
+                new GenericJackson2JsonRedisSerializer(createRedisObjectMapper());
 
         // Key serialization
         template.setKeySerializer(stringSerializer);
@@ -59,15 +71,15 @@ public class RedisConfig {
 
     @Bean
     public CacheManager cacheManager(RedisConnectionFactory connectionFactory) {
-        // JSON serializer
+        // JSON serializer (using Redis-specific ObjectMapper)
         GenericJackson2JsonRedisSerializer jsonSerializer =
-                new GenericJackson2JsonRedisSerializer(redisObjectMapper());
+                new GenericJackson2JsonRedisSerializer(createRedisObjectMapper());
 
-        // Default cache configuration
+        // Default cache configuration with JSON serialization
         RedisCacheConfiguration defaultConfig = RedisCacheConfiguration.defaultCacheConfig()
-                .entryTtl(Duration.ofHours(1)) // Default TTL:  1 hour
+                .entryTtl(Duration.ofHours(1)) // Default TTL: 1 hour
                 .serializeKeysWith(
-                        RedisSerializationContext. SerializationPair.fromSerializer(new StringRedisSerializer())
+                        RedisSerializationContext.SerializationPair.fromSerializer(new StringRedisSerializer())
                 )
                 .serializeValuesWith(
                         RedisSerializationContext.SerializationPair.fromSerializer(jsonSerializer)
@@ -76,14 +88,15 @@ public class RedisConfig {
 
         return RedisCacheManager.builder(connectionFactory)
                 .cacheDefaults(defaultConfig)
+                // Apply defaultConfig with custom TTL for each cache
                 .withCacheConfiguration("products",
-                        RedisCacheConfiguration. defaultCacheConfig().entryTtl(Duration. ofMinutes(30)))
+                        defaultConfig.entryTtl(Duration.ofMinutes(30)))
                 .withCacheConfiguration("categories",
-                        RedisCacheConfiguration.defaultCacheConfig().entryTtl(Duration.ofHours(2)))
+                        defaultConfig.entryTtl(Duration.ofHours(2)))
                 .withCacheConfiguration("shops",
-                        RedisCacheConfiguration.defaultCacheConfig().entryTtl(Duration.ofMinutes(30)))
+                        defaultConfig.entryTtl(Duration.ofMinutes(30)))
                 .withCacheConfiguration("users",
-                        RedisCacheConfiguration.defaultCacheConfig().entryTtl(Duration.ofMinutes(15)))
+                        defaultConfig.entryTtl(Duration.ofMinutes(15)))
                 .transactionAware()
                 .build();
     }
