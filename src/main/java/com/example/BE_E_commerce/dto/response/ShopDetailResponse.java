@@ -21,7 +21,7 @@ public class ShopDetailResponse extends ShopResponse implements Serializable {
     private List<ProductResponse> newArrivals = new ArrayList<>();
 
     // Categories that shop has products in
-    private List<CategorySummary> categories = new ArrayList<>();
+    private List<CategorySummary> categories =  new ArrayList<>();
 
     @Data
     public static class CategorySummary {
