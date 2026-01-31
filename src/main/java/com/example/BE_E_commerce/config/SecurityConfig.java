@@ -89,6 +89,7 @@ public class SecurityConfig {
                 "http://127.0.0.1:3000"
         ));
 
+
         // Allow methods
         configuration.setAllowedMethods(Arrays.asList(
                 "GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"
