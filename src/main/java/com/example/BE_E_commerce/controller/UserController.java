@@ -1,9 +1,9 @@
 package com.example.BE_E_commerce.controller;
 
-import com.example.BE_E_commerce.dto.request.AddressRequest;
-import com.example.BE_E_commerce.dto.response.AddressResponse;
-import com.example.BE_E_commerce.dto.response.MessageResponse;
-import com.example.BE_E_commerce.dto.response.UploadAvatarResponse;
+import com.example.BE_E_commerce.entity.dto.request.AddressRequest;
+import com.example.BE_E_commerce.entity.dto.response.AddressResponse;
+import com.example.BE_E_commerce.entity.dto.response.MessageResponse;
+import com.example.BE_E_commerce.entity.dto.response.UploadAvatarResponse;
 import com.example.BE_E_commerce.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;

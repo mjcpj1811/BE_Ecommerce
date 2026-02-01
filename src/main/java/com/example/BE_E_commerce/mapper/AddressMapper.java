@@ -1,7 +1,7 @@
 package com.example.BE_E_commerce.mapper;
 
-import com.example.BE_E_commerce.dto.request.AddressRequest;
-import com.example.BE_E_commerce.dto.response.AddressResponse;
+import com.example.BE_E_commerce.entity.dto.request.AddressRequest;
+import com.example.BE_E_commerce.entity.dto.response.AddressResponse;
 import com.example.BE_E_commerce.entity.UserAddress;
 import org.mapstruct.*;
 

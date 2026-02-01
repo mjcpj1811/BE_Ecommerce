@@ -1,7 +1,7 @@
 package com.example.BE_E_commerce.controller;
 
-import com.example. BE_E_commerce.dto. request.ProductFilterRequest;
-import com.example.BE_E_commerce.dto.response.*;
+import com.example.BE_E_commerce.entity.dto.request.ProductFilterRequest;
+import com.example.BE_E_commerce.entity.dto.response.*;
 import com.example.BE_E_commerce.service.ProductService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;

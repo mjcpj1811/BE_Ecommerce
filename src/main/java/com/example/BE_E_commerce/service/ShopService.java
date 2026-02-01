@@ -1,10 +1,13 @@
 package com.example.BE_E_commerce.service;
 
 
-import com.example.BE_E_commerce.dto.request.ShopFilterRequest;
-import com.example.BE_E_commerce.dto.response.*;
+import com.example.BE_E_commerce.entity.dto.request.ShopFilterRequest;
 import com.example.BE_E_commerce.entity.Product;
 import com.example.BE_E_commerce.entity.Shop;
+import com.example.BE_E_commerce.entity.dto.response.PageResponse;
+import com.example.BE_E_commerce.entity.dto.response.ProductResponse;
+import com.example.BE_E_commerce.entity.dto.response.ShopDetailResponse;
+import com.example.BE_E_commerce.entity.dto.response.ShopResponse;
 import com.example.BE_E_commerce.enums.ProductStatus;
 import com.example.BE_E_commerce.enums.ShopStatus;
 import com.example.BE_E_commerce.exception.ResourceNotFoundException;

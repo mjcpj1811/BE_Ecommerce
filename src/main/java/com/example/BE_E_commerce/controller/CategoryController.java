@@ -1,6 +1,6 @@
 package com.example.BE_E_commerce.controller;
 
-import com.example. BE_E_commerce.dto. response.CategoryResponse;
+import com.example.BE_E_commerce.entity.dto.response.CategoryResponse;
 import com. example.BE_E_commerce. service.CategoryService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;

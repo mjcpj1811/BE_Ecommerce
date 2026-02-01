@@ -1,8 +1,8 @@
 package com.example.BE_E_commerce.mapper;
 
-import com.example.BE_E_commerce.dto.request.RegisterRequest;
-import com.example.BE_E_commerce.dto.request.UpdateProfileRequest;
-import com.example.BE_E_commerce.dto.response.UserResponse;
+import com.example.BE_E_commerce.entity.dto.request.RegisterRequest;
+import com.example.BE_E_commerce.entity.dto.request.UpdateProfileRequest;
+import com.example.BE_E_commerce.entity.dto.response.UserResponse;
 import com.example.BE_E_commerce.entity.User;
 import org.mapstruct.*;
 

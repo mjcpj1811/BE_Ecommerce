@@ -1,9 +1,9 @@
 package com.example.BE_E_commerce.service;
 
-import com.example.BE_E_commerce.dto.request.*;
-import com.example.BE_E_commerce. dto.response.JwtResponse;
-import com.example.BE_E_commerce. dto.response.MessageResponse;
-import com.example.BE_E_commerce.dto.response.UserResponse;
+import com.example.BE_E_commerce.entity.dto.request.*;
+import com.example.BE_E_commerce.entity.dto.response.JwtResponse;
+import com.example.BE_E_commerce.entity.dto.response.MessageResponse;
+import com.example.BE_E_commerce.entity.dto.response.UserResponse;
 import com.example.BE_E_commerce.entity.User;
 import com.example.BE_E_commerce.exception.BadRequestException;
 import com.example.BE_E_commerce.exception.DuplicateResourceException;

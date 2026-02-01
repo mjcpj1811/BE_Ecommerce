@@ -1,4 +1,4 @@
-package com.example.BE_E_commerce.dto.request;
+package com.example.BE_E_commerce.entity.dto.request;
 
 
 import lombok.Data;

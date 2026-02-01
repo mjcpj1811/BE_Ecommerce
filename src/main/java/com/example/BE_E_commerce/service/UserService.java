@@ -1,9 +1,9 @@
 package com.example.BE_E_commerce.service;
 
-import com.example.BE_E_commerce.dto.request.AddressRequest;
-import com.example.BE_E_commerce.dto.response.AddressResponse;
-import com.example.BE_E_commerce.dto.response.UploadAvatarResponse;
-import com.example.BE_E_commerce.dto.response.UserResponse;
+import com.example.BE_E_commerce.entity.dto.request.AddressRequest;
+import com.example.BE_E_commerce.entity.dto.response.AddressResponse;
+import com.example.BE_E_commerce.entity.dto.response.UploadAvatarResponse;
+import com.example.BE_E_commerce.entity.dto.response.UserResponse;
 import com.example.BE_E_commerce.entity.User;
 import com.example.BE_E_commerce.entity.UserAddress;
 import com.example.BE_E_commerce.exception.BadRequestException;

@@ -1,7 +1,7 @@
 package com.example.BE_E_commerce.service;
 
-import com.example.BE_E_commerce.dto.request.CategoryRequest;
-import com.example.BE_E_commerce.dto.response.CategoryResponse;
+import com.example.BE_E_commerce.entity.dto.request.CategoryRequest;
+import com.example.BE_E_commerce.entity.dto.response.CategoryResponse;
 import com.example.BE_E_commerce.entity.Category;
 import com.example.BE_E_commerce.exception.BadRequestException;
 import com.example.BE_E_commerce.exception.DuplicateResourceException;

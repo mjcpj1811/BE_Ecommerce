@@ -1,9 +1,9 @@
 package com.example.BE_E_commerce.service;
 
-import com.example. BE_E_commerce.dto. request.ProductFilterRequest;
-import com.example. BE_E_commerce.dto. response.*;
+import com.example.BE_E_commerce.entity.dto.request.ProductFilterRequest;
 import com.example.BE_E_commerce.entity.Product;
 import com.example.BE_E_commerce.entity.ProductImage;
+import com.example.BE_E_commerce.entity.dto.response.*;
 import com.example.BE_E_commerce.enums. ProductStatus;
 import com.example.BE_E_commerce.enums.ReviewStatus;
 import com.example. BE_E_commerce.exception.ResourceNotFoundException;

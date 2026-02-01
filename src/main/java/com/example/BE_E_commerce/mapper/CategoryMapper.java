@@ -1,7 +1,7 @@
 package com.example.BE_E_commerce.mapper;
 
-import com.example.BE_E_commerce.dto.request.CategoryRequest;
-import com.example.BE_E_commerce.dto.response.CategoryResponse;
+import com.example.BE_E_commerce.entity.dto.request.CategoryRequest;
+import com.example.BE_E_commerce.entity.dto.response.CategoryResponse;
 import com.example.BE_E_commerce.entity.Category;
 import org.mapstruct.*;
 

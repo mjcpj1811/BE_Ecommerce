@@ -1,4 +1,4 @@
-package com.example.BE_E_commerce.dto.response;
+package com.example.BE_E_commerce.entity.dto.response;
 
 import com.example.BE_E_commerce.enums.ShopStatus;
 import lombok.Data;

@@ -1,10 +1,10 @@
 package com.example.BE_E_commerce.controller;
 
-import com.example.BE_E_commerce.dto.request.ShopFilterRequest;
-import com.example.BE_E_commerce.dto.response.PageResponse;
-import com.example.BE_E_commerce.dto.response.ProductResponse;
-import com.example.BE_E_commerce.dto.response.ShopDetailResponse;
-import com.example.BE_E_commerce.dto.response.ShopResponse;
+import com.example.BE_E_commerce.entity.dto.request.ShopFilterRequest;
+import com.example.BE_E_commerce.entity.dto.response.PageResponse;
+import com.example.BE_E_commerce.entity.dto.response.ProductResponse;
+import com.example.BE_E_commerce.entity.dto.response.ShopDetailResponse;
+import com.example.BE_E_commerce.entity.dto.response.ShopResponse;
 import com.example.BE_E_commerce.service.ShopService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
